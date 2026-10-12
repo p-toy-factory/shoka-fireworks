@@ -1,0 +1,9 @@
+---
+interface Props {
+	text: string;
+	codes: Record<string, string>;
+}
+const { text, codes } = Astro.props;
+const parts = text.split(/(\{\w+\})/g);
+---
+{parts.map((part) => part.startsWith("{") && part.endsWith("}") ? <code>{codes[part.slice(1, -1)] ?? part}</code> : part)}

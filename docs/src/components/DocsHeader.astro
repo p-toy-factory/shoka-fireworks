@@ -1,0 +1,42 @@
+---
+import {
+	type Locale,
+	languageNames,
+	localePath,
+	locales,
+	messages,
+} from "../i18n";
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = messages[locale];
+---
+<header id="top">
+	<a class="brand" href="#top" aria-label={t.nav.backToTop}><span class="brand-mark" aria-hidden="true">✳</span> SHOKA FIREWORKS</a>
+	<nav class="page-nav" aria-label={t.nav.sections}>
+		<a href="#installation">{t.nav.install}</a>
+		<a href="#playground">{t.nav.playground}</a>
+		<a href="#quick-start">{t.nav.example}</a>
+		<a href="#api-reference">{t.nav.api}</a>
+	</nav>
+	<details class="language-picker">
+		<summary class="language-trigger" aria-label={`${t.nav.language}: ${languageNames[locale]}`}><span lang={locale}>{languageNames[locale]}</span><svg class="language-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg></summary>
+		<nav class="language-nav" aria-label={t.nav.language}>
+			{locales.map((language) => <a href={localePath(language)} data-locale={language} lang={language} hreflang={language} aria-current={language === locale ? "page" : undefined}>{languageNames[language]}</a>)}
+		</nav>
+	</details>
+	<a class="github-link" href="https://github.com/p-toy-factory/shoka-firework" aria-label={t.nav.github}>GitHub</a>
+</header>
+
+<script>
+	import { setupHeader } from "./header";
+
+	const header = document.querySelector<HTMLElement>("header#top");
+	if (!header) throw new Error("Required element not found: header#top");
+
+	const cleanup = setupHeader(header);
+	if (import.meta.hot) import.meta.hot.dispose(cleanup);
+</script>

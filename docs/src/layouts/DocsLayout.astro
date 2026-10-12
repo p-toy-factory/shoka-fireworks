@@ -1,0 +1,22 @@
+---
+import "../style.css";
+import { type Locale, messages } from "../i18n";
+
+interface Props {
+	locale: Locale;
+}
+const { locale } = Astro.props;
+const { meta } = messages[locale];
+---
+<!doctype html>
+<html lang={locale}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#11151f" />
+		<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2311151f'/%3E%3Cpath d='M32 8l4 20 20 4-20 4-4 20-4-20-20-4 20-4z' fill='%23ffb6b9'/%3E%3C/svg%3E" />
+		<meta name="description" content={meta.description} />
+		<title>{meta.title}</title>
+	</head>
+	<body><slot /></body>
+</html>

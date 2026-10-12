@@ -1,0 +1,55 @@
+{
+	"name": "shoka-fireworks",
+	"version": "1.0.0",
+	"description": "Add click-triggered fireworks to browser pages.",
+	"keywords": [
+		"fireworks",
+		"canvas",
+		"animation",
+		"click-effect",
+		"browser",
+		"typescript"
+	],
+	"homepage": "https://github.com/p-toy-factory/shoka-firework#readme",
+	"bugs": {
+		"url": "https://github.com/p-toy-factory/shoka-firework/issues"
+	},
+	"license": "MIT",
+	"type": "module",
+	"files": [
+		"dist",
+		"src",
+		"THIRD-PARTY-NOTICES.md"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/p-toy-factory/shoka-firework.git"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"types": "./dist/index.d.ts",
+	"scripts": {
+		"build": "tsc -p tsconfig.json",
+		"prepack": "npm run build",
+		"check": "biome check .",
+		"test:docs": "pnpm --filter docs test",
+		"format": "biome format --write ."
+	},
+	"dependencies": {
+		"animejs": "^4.5.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.15",
+		"typescript": "7.0.2"
+	},
+	"packageManager": "pnpm@12.11.2",
+	"engines": {
+		"node": ">=24.18.0 <25",
+		"pnpm": ">=11.9.0"
+	}
+}

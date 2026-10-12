@@ -1,0 +1,6 @@
+packages:
+  - docs
+allowBuilds:
+  "@parcel/watcher": false
+  esbuild: true
+  sharp: true

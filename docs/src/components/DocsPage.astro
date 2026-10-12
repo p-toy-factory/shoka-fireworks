@@ -1,0 +1,90 @@
+---
+import { Code } from "astro:components";
+import { createUsageExample } from "../documentation";
+import { type Locale, messages } from "../i18n";
+import DocsLayout from "../layouts/DocsLayout.astro";
+import { DEFAULT_COLORS } from "../../../src/default-colors";
+import DocsHeader from "./DocsHeader.astro";
+import InlineCodeText from "./InlineCodeText.astro";
+
+interface Props {
+	locale: Locale;
+}
+const { locale } = Astro.props;
+const t = messages[locale];
+const [creditBefore, creditAfter] = t.credits.description.split("{project}");
+const codes = {
+	body: "document.body",
+	colors: "colors",
+	shouldPlayAnimation: "shouldPlayAnimation",
+	matches: "reducedMotion.matches",
+	false: "false",
+	cleanup: "cleanup()",
+};
+const defaultColors = JSON.stringify(DEFAULT_COLORS, null, 2);
+---
+<DocsLayout locale={locale}>
+	<div id="app" data-runtime={JSON.stringify(t.runtime)}>
+		<DocsHeader locale={locale} />
+		<main>
+			<section class="intro"><h1>{t.intro.lineOne}<br /><span>{t.intro.lineTwo}</span></h1></section>
+			<section id="installation" class="panel doc-panel tutorial-step" aria-labelledby="install-title">
+				<p class="eyebrow">{t.install.step}</p><h2 id="install-title">{t.install.title}</h2>
+				<p>{t.install.description}</p>
+				<div class="code-heading"><span>npm</span><button type="button" data-copy="install-command" data-status="install-copy-status">{t.install.copy}</button></div>
+				<Code id="install-command" code="npm install shoka-fireworks" lang="sh" theme="github-dark-default" /><p id="install-copy-status" class="copy-status" role="status" aria-live="polite"></p>
+			</section>
+			<section id="playground" class="tutorial-step" aria-labelledby="playground-title">
+				<div class="step-heading"><p class="eyebrow">{t.playground.step}</p><h2 id="playground-title">{t.playground.title}</h2><p class="help">{t.playground.description}</p></div>
+				<div class="workspace">
+					<section class="panel palette" aria-labelledby="palette-title">
+						<div class="section-heading"><h3 id="palette-title">{t.playground.palette}</h3><button id="reset" class="quiet" type="button">{t.playground.reset}</button></div>
+						<p class="help">{t.playground.help}</p><div id="color-rows"></div><button id="add" class="add" type="button">{t.playground.add}</button>
+					</section>
+					<section class="preview-section" aria-labelledby="preview-title">
+						<div class="preview-heading"><h3 id="preview-title">{t.playground.preview}</h3><span class="live"><i></i> <span id="live-label">{t.runtime.livePreview}</span></span></div>
+						<div class="preview-controls"><span>{t.playground.invitation}</span><button id="toggle-effects" type="button" aria-pressed="true">{t.playground.toggle} <span id="effects-state" aria-hidden="true">{t.runtime.on}</span></button></div>
+						<aside id="motion-warning" class="motion-warning" role="alert" hidden><strong>{t.playground.warningTitle}</strong><p>{t.playground.warning}</p></aside>
+						<button id="preview" type="button" aria-describedby="motion-warning" aria-label={t.playground.launch}>
+							<span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="spark" aria-hidden="true">✳</span><strong id="preview-prompt">{t.runtime.previewPrompt}</strong><span class="preview-hint">{t.runtime.previewHint}</span><span class="preview-key">{t.playground.keyboard}</span>
+						</button>
+						<p id="preview-status" class="copy-status" role="status" aria-live="polite"></p>
+					</section>
+				</div>
+			</section>
+			<section id="quick-start" class="panel doc-panel code-panel tutorial-step" aria-labelledby="code-title">
+				<div class="section-heading"><div><p class="eyebrow">{t.usage.step}</p><h2 id="code-title">{t.usage.title}</h2></div><button id="copy" type="button" data-copy="snippet" data-status="copy-status">{t.usage.copy}</button></div>
+				<p><InlineCodeText text={t.usage.description} codes={codes} /></p>
+				<Code id="snippet" code={createUsageExample(undefined, t.runtime.cleanupComment)} lang="ts" theme="github-dark-default" /><p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+				<aside class="motion-note" aria-labelledby="motion-note-title"><strong id="motion-note-title">{t.usage.motionTitle}</strong><p>{t.usage.motion} <a href="https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions">{t.usage.guidance}</a></p></aside>
+				<p class="doc-detail"><InlineCodeText text={t.usage.check} codes={codes} /></p>
+				<p class="doc-detail"><InlineCodeText text={t.usage.cleanup} codes={codes} /></p>
+			</section>
+			<section id="api-reference" class="panel doc-panel tutorial-step" aria-labelledby="api-title">
+				<p class="eyebrow">{t.api.step}</p><h2 id="api-title"><code>fireworks(config?: FireworkConfig): () =&gt; void</code></h2>
+				<p><InlineCodeText text={t.api.description} codes={codes} /></p>
+				<h3><code>FireworkConfig</code></h3>
+				<div class="api-table-scroll" tabindex="0" role="region" aria-label={t.api.options}>
+					<table>
+						<thead><tr><th>{t.api.option}</th><th>{t.api.type}</th><th>{t.api.default}</th><th>{t.api.behavior}</th></tr></thead>
+						<tbody>
+							<tr><th scope="row"><code>colors?</code></th><td><code>string[]</code></td><td>{t.api.defaultPalette}</td><td>{t.api.colors}</td></tr>
+							<tr><th scope="row"><code>shouldPlayAnimation?</code></th><td><code>(event: MouseEvent) =&gt; boolean</code></td><td><code>() =&gt; true</code></td><td><InlineCodeText text={t.api.shouldPlayAnimation} codes={codes} /></td></tr>
+						</tbody>
+					</table>
+				</div>
+				<p class="doc-detail"><InlineCodeText text={t.api.motion} codes={codes} /></p>
+				<h3>{t.api.defaultColors}</h3><Code code={defaultColors} lang="ts" theme="github-dark-default" />
+				<h3>{t.api.cleanupTitle}</h3><p>{t.api.cleanup}</p><Code code="cleanup();" lang="ts" theme="github-dark-default" />
+			</section>
+			<section id="credits" class="panel doc-panel tutorial-step credits" aria-labelledby="credits-title">
+				<h2 id="credits-title">{t.credits.title}</h2>
+				<p>{creditBefore}<a href="https://github.com/amehime/hexo-theme-shoka">Hexo Theme Shoka</a>{creditAfter}</p>
+			</section>
+		</main>
+	</div>
+</DocsLayout>
+
+<script>
+	import "../main";
+</script>

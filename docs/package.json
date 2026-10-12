@@ -1,0 +1,20 @@
+{
+	"name": "docs",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro check && astro build",
+		"preview": "astro preview",
+		"test": "tsc -p tsconfig.e2e.json && playwright test",
+		"test:ui": "playwright test --ui"
+	},
+	"devDependencies": {
+		"@astrojs/check": "0.9.10",
+		"@playwright/test": "1.64.0",
+		"@types/node": "24.19.2",
+		"astro": "7.3.8",
+		"shiki": "4.5.0",
+		"typescript": "6.0.3"
+	}
+}
